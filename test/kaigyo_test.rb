@@ -5,7 +5,7 @@ class KaigyoTest < Minitest::Test
     refute_nil ::Kaigyo::VERSION
   end
 
-  def test_it_does_something_useful
-    assert true
+  def test_kaigyo
+    assert_equal "kaigyo", ''.kaigyo
   end
 end
