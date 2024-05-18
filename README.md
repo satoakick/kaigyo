@@ -21,12 +21,14 @@ Or install it yourself as:
 ## Usage
 
 ```
-puts "select a,b from foo inner join bar on foo.id = bar.id where a = 1 group by c order by d".kaigyo
+irb(main):001:0> puts "select a,b from foo inner join bar on foo.id = bar.id where a = 1 group by c order by d".kaigyo
 select a,b
-from foo inner join bar on foo.id = bar.id
+from foo
+  inner join bar on foo.id = bar.id
 where a = 1
 group by c
 order by d
+=> nil
 ```
 
 ## Development
