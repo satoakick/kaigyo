@@ -63,15 +63,14 @@ module Kaigyo
       prev_token = nil
       while token = tokenizer.next do
         # puts "token: #{token}"
-        token = token.downcase
 
-        case token
+        case token.downcase
         when SELECT, FROM, WHERE, HAVING, WINDOW, UNION,
              INTERSECT, EXCEPT, LIMIT, OFFSET, FETCH, FOR
           result << [token]
         else
-          if prev_token == GROUP && token == BY ||
-             prev_token == ORDER && token == BY
+          if prev_token&.downcase == GROUP && token.downcase == BY ||
+             prev_token&.downcase == ORDER && token.downcase == BY
 
             # Remove 'group', 'order' in the last element
             result.last.pop
@@ -86,7 +85,6 @@ module Kaigyo
       end
       result
     end
-
   end
 
   def kaigyo
