@@ -88,7 +88,7 @@ module Kaigyo
   end
 
   def kaigyo
-    return self unless self.include?("select") or self.include?("SELECT")
+    return self unless self.downcase.include?("select")
 
     tokenizer = Tokenizer.new(self)
     parser = Parser.new(tokenizer)
