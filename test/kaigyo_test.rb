@@ -22,6 +22,6 @@ class KaigyoTest < Minitest::Test
 
   def test_more_complicated_query
     result = "select a,b from foo inner join bar on foo.id = bar.id where a = 1 group by c order by d".kaigyo
-    assert_equal "select a,b\nfrom foo inner join bar on foo.id = bar.id\nwhere a = 1\ngroup by c\norder by d", result
+    assert_equal "select a,b\nfrom foo\n  inner join bar on foo.id = bar.id\nwhere a = 1\ngroup by c\norder by d", result
   end
 end
