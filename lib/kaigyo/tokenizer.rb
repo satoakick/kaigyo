@@ -188,6 +188,8 @@ module Kaigyo
           [:clause, "#{prev_token} #{token}"]
         end
       when INNER, OUTER, LEFT, RIGHT, FULL, CROSS, GROUP, ORDER
+        # suppress for duplicate node.
+        # cf. GROUP BY, ORDER BY, INNER JOIN
         nil
       when ','
         [:pancutuation, token]
