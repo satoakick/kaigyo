@@ -21,9 +21,9 @@ module Kaigyo
       end
 
       if token.first == :clause
-        acc << [indent(indent_size) + token[1]]
+        acc << [indent_token(indent_size) + token[1]]
       elsif token.first == :and || token.first == :or
-        acc << [indent(indent_size) + '  ' + token[1]]
+        acc << [indent_token(indent_size) + '  ' + token[1]]
       else
         acc.last << token[1]
       end
@@ -40,7 +40,7 @@ module Kaigyo
     end.join("\n")
   end
 
-  def indent(size)
+  def indent_token(size)
     '  ' * size
   end
 end
