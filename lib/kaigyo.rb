@@ -33,7 +33,13 @@ module Kaigyo
     end
 
     result.map do |row|
-      row.inject("") { |str, c| str += c == ',' ? c : " #{c}" }.strip
+      row.each.with_index.inject("") do |str, (c, idx)|
+        if idx == 0
+          str += c
+        else
+          str += c == ',' ? c : " #{c}"
+        end
+      end
     end.join("\n")
   end
 
