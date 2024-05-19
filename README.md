@@ -24,7 +24,7 @@ Or install it yourself as:
 irb(main):001:0> puts "select a,b from foo inner join bar on foo.id = bar.id where a = 1 group by c order by d".kaigyo
 select a,b
 from foo
-  inner join bar on foo.id = bar.id
+inner join bar on foo.id = bar.id
 where a = 1
 group by c
 order by d
