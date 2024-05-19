@@ -9,14 +9,20 @@ module Kaigyo
     return self unless self.downcase.include?("select")
 
     tokenizer = Tokenizer.new(self)
-    parser = Parser.new(tokenizer)
-    tree = parser.parse
-    tree.map do |node|
-      str = "#{node.first} #{node[1..].join(' ')}"
-      if node.first.downcase.include? 'join'
-        str = "  " + str
+    tokens = tokenizer.token_analysis
+    result = []
+    tokens.each do |token|
+      if token.first == :clause
+        result << [token[1]]
+      elsif token.first == :on || token.first == :and || token.first == :or
+        result << ['  ' + token[1]]
+      else
+        result.last << token[1]
       end
-      str
+    end
+
+    result.map do |row|
+      row.join(' ')
     end.join("\n")
   end
 end
@@ -24,3 +30,4 @@ end
 class String
   include Kaigyo
 end
+
