@@ -8,3 +8,4 @@
 /tmp/
 vendor/bundle
 Gemfile.lock
+.ruby-version
