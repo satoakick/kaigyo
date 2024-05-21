@@ -10,7 +10,7 @@ class Kaigyo::TokenizerTest < Minitest::Test
     assert_equal result, [
       [:clause, "SELECT"],
       [:identifier, "foo"],
-      [:pancutuation, ","],
+      [:punctuation, ","],
       [:identifier, "bar"],
       [:clause, "FROM"],
       [:identifier, "hoge"],
@@ -30,6 +30,29 @@ class Kaigyo::TokenizerTest < Minitest::Test
       [:identifier, "hoge.group_id"],
       [:clause, "order by"],
       [:identifier, "created_at"]
+    ]
+  end
+
+  def test_with_clause
+    result = Kaigyo::Tokenizer.new(<<-SQL).token_analysis
+      WITH foo AS (select a from b), SELECT c from d
+    SQL
+
+    assert_equal result, [
+      [:clause, "WITH"],
+      [:identifier, 'foo'],
+      [:as, 'AS'],
+      [:left_paren, '('],
+      [:clause, 'select'],
+      [:identifier, 'a'],
+      [:clause, 'from'],
+      [:identifier, 'b'],
+      [:right_paren, ')'],
+      [:punctuation, ','],
+      [:clause, 'SELECT'],
+      [:identifier, 'c'],
+      [:clause, 'from'],
+      [:identifier, 'd'],
     ]
   end
 end

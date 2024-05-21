@@ -28,7 +28,7 @@ module Kaigyo
     FULL = 'full'
     CROSS = 'cross'
     JOIN = 'join'
-    PANCUTUATION = 'punctuation'
+    PUNCTUATION = 'punctuation'
     EQUAL = 'eaual'
     LESS_THAN_EQUAL = 'less_than_equal'
     LESS_THAN = 'less_than'
@@ -60,7 +60,7 @@ module Kaigyo
 
       target = source[current..-1]
       target.chars.each_with_index do |c, i|
-        #puts "c: #{c} i: #{i} current: #{current}"
+        # p "c: #{c} i: #{i} current: #{current}"
 
         @current += 1
 
@@ -92,7 +92,7 @@ module Kaigyo
           token << c
 
           break
-        when ' '
+        when ' ', "\n"
           next if token.size.zero?
 
           break
@@ -141,7 +141,7 @@ module Kaigyo
       # puts "token_name: #{token_name} prev_prev_token: #{prev_prev_token} prev_token: #{prev_token} token: #{token}"
 
       case token_name
-      when SELECT, FROM, WHERE, HAVING, LIMIT, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
+      when WITH, SELECT, FROM, WHERE, HAVING, LIMIT, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
         [:clause, token]
       when AND
         if prev_prev_token.downcase == BETWEEN
@@ -192,7 +192,7 @@ module Kaigyo
         # cf. GROUP BY, ORDER BY, INNER JOIN
         nil
       when ','
-        [:pancutuation, token]
+        [:punctuation, token]
       when ')'
         [:right_paren, token]
       when '('
