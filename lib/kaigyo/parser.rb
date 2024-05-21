@@ -16,17 +16,16 @@ module Kaigyo
 
     private
 
-      def select
-        if select_clause?(enumerator.peek)
-          token = tokens_next
-          result << { token => values }
+      [:select, :from].each do |clause_name|
+        define_method clause_name do
+          if send(:"#{clause_name}_clause?", enumerator.peek)
+            token = tokens_next
+            result << { token => values }
+          end
         end
-      end
 
-      def from
-        if from_clause?(enumerator.peek)
-          token = tokens_next
-          result << { token => values }
+        define_method :"#{clause_name}_clause?" do |token|
+          clause?(token) && token[1].downcase == clause_name.to_s
         end
       end
 
@@ -36,14 +35,6 @@ module Kaigyo
           _values << tokens_next
         end
         _values
-      end
-
-      def select_clause?(token)
-        clause?(token) && token[1].downcase == 'select'
-      end
-
-      def from_clause?(token)
-        clause?(token) && token[1].downcase == 'from'
       end
 
       def clause?(token)
