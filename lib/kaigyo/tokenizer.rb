@@ -29,6 +29,7 @@ module Kaigyo
     CROSS = 'cross'
     JOIN = 'join'
     PUNCTUATION = 'punctuation'
+    SEMI_COLON = 'semi_colon'
     EQUAL = 'eaual'
     LESS_THAN_EQUAL = 'less_than_equal'
     LESS_THAN = 'less_than'
@@ -106,7 +107,7 @@ module Kaigyo
           token << c
 
           case target[i+1]
-          when ',', ' ', '(', ')', '=', '<', '>'
+          when ',', ' ', '(', ')', '=', '<', '>', ';'
             break
           end
         end
@@ -193,6 +194,8 @@ module Kaigyo
         nil
       when ','
         [:punctuation, token]
+      when ';'
+        [:semi_colon, token]
       when ')'
         [:right_paren, token]
       when '('

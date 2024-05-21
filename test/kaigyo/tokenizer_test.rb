@@ -4,7 +4,7 @@ class Kaigyo::TokenizerTest < Minitest::Test
 
   def test_single_table_token_analysis
     result = Kaigyo::Tokenizer.new(<<-SQL).token_analysis
-      SELECT foo, bar FROM hoge WHERE a = 1 and b=2 OR c = 3 GROUP BY hoge.group_id order by created_at
+      SELECT foo, bar FROM hoge WHERE a = 1 and b=2 OR c = 3 GROUP BY hoge.group_id order by created_at;
     SQL
 
     assert_equal result, [
@@ -29,7 +29,8 @@ class Kaigyo::TokenizerTest < Minitest::Test
       [:clause, "GROUP BY"],
       [:identifier, "hoge.group_id"],
       [:clause, "order by"],
-      [:identifier, "created_at"]
+      [:identifier, "created_at"],
+      [:semi_colon, ";"],
     ]
   end
 
