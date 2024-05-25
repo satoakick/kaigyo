@@ -1,6 +1,5 @@
 require "kaigyo/version"
 require "kaigyo/tokenizer"
-require "kaigyo/parser"
 
 module Kaigyo
   class Error < StandardError; end
