@@ -142,8 +142,14 @@ module Kaigyo
       # puts "token_name: #{token_name} prev_prev_token: #{prev_prev_token} prev_token: #{prev_token} token: #{token}"
 
       case token_name
-      when WITH, SELECT, FROM, WHERE, HAVING, LIMIT, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
+      when WITH, HAVING, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
         [:clause, token]
+      when SELECT
+        [:select, token]
+      when FROM
+        [:from, token]
+      when WHERE
+        [:where, token]
       when AND
         if prev_prev_token.downcase == BETWEEN
           [:between_and, token]
@@ -164,33 +170,40 @@ module Kaigyo
         [:in, token]
       when ASC, DESC
         [:order_option, token]
+      when LIMIT
+        [:limit, token]
       when JOIN
         if prev_token.downcase == INNER
-          [:clause, "#{prev_token} #{token}"]
+          [:join, "#{prev_token} #{token}"]
         elsif prev_prev_token.downcase == LEFT && prev_token.downcase == OUTER
-          [:clause, "#{prev_prev_token} #{prev_token} #{token}"]
+          [:join, "#{prev_prev_token} #{prev_token} #{token}"]
         elsif prev_token.downcase == LEFT
-          [:clause, "#{prev_token} #{token}"]
+          [:join, "#{prev_token} #{token}"]
         elsif prev_prev_token.downcase == RIGHT && prev_token.downcase == OUTER
-          [:clause, "#{prev_prev_token} #{prev_token} #{token}"]
+          [:join, "#{prev_prev_token} #{prev_token} #{token}"]
         elsif prev_token.downcase == RIGHT
-          [:clause, "#{prev_token} #{token}"]
+          [:join, "#{prev_token} #{token}"]
         elsif prev_prev_token.downcase == FULL && prev_token.downcase == OUTER
-          [:clause, "#{prev_prev_token} #{prev_token} #{token}"]
+          [:join, "#{prev_prev_token} #{prev_token} #{token}"]
         elsif prev_token.downcase == FULL
-          [:clause, "#{prev_token} #{token}"]
+          [:join, "#{prev_token} #{token}"]
         elsif prev_token.downcase == CROSS
-          [:clause, "#{prev_token} #{token}"]
+          [:join, "#{prev_token} #{token}"]
         else
-          [:clause, token]
+          [:join, token]
         end
       when BY
-        if prev_token.downcase == GROUP || prev_token.downcase == ORDER
-          [:clause, "#{prev_token} #{token}"]
+        if prev_token.downcase == GROUP
+          return [:group_by, "#{prev_token} #{token}"]
+        end
+        if prev_token.downcase == ORDER
+          return [:order_by, "#{prev_token} #{token}"]
         end
       when INNER, OUTER, LEFT, RIGHT, FULL, CROSS, GROUP, ORDER
         # suppress for duplicate node.
         # cf. GROUP BY, ORDER BY, INNER JOIN
+        nil
+      when ''
         nil
       when ','
         [:punctuation, token]
