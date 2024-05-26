@@ -142,7 +142,7 @@ module Kaigyo
       # puts "token_name: #{token_name} prev_prev_token: #{prev_prev_token} prev_token: #{prev_token} token: #{token}"
 
       case token_name
-      when WITH, HAVING, LIMIT, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
+      when WITH, HAVING, OFFSET, WINDOW, UNION, INTERSECT, EXCEPT
         [:clause, token]
       when SELECT
         [:select, token]
@@ -170,6 +170,8 @@ module Kaigyo
         [:in, token]
       when ASC, DESC
         [:order_option, token]
+      when LIMIT
+        [:limit, token]
       when JOIN
         if prev_token.downcase == INNER
           [:join, "#{prev_token} #{token}"]
@@ -200,6 +202,8 @@ module Kaigyo
       when INNER, OUTER, LEFT, RIGHT, FULL, CROSS, GROUP, ORDER
         # suppress for duplicate node.
         # cf. GROUP BY, ORDER BY, INNER JOIN
+        nil
+      when ''
         nil
       when ','
         [:punctuation, token]
