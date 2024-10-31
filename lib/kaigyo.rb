@@ -12,7 +12,7 @@ module Kaigyo
     result = []
     indent_size = 0
 
-    tokens.inject([]) do |acc, token|
+    formatted = tokens.inject([]) do |acc, token|
       if token.first == :left_paren
         indent_size += 1
       end
@@ -38,6 +38,9 @@ module Kaigyo
         end
       end
     end.join("\n")
+
+    puts formatted
+    formatted
   end
 
   def indent_token(size)
