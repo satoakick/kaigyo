@@ -32,7 +32,7 @@ rule
         | number
         | literal
   ident: identifier
-       | identifier as identifier { result = val }      
+       | identifier as identifier { result = val }
   
   conditions: condition
             | condition and_or conditions { result = val }
