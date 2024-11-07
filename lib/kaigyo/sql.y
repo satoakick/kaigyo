@@ -57,7 +57,6 @@ end
 #
 ---- inner
 
-load '../lib/kaigyo/tokenizer.rb'
 def parse(str)
   tokenizer = ::Kaigyo::Tokenizer.new(str)
   @q = tokenizer.token_analysis
@@ -73,20 +72,20 @@ end
 
 ---- footer
 
-if __FILE__ == $0
-TEST_SQL =<<-SQL
-  select a as aa , b as bb, (select c from hoge where c.id = 1 or hoge.id = 1) as cc inner join piyo as p on p.id = a.id left outer join aaaaa as aaa on aaa.id = a.id where aaa.gid > 1 or aaa.id > 0;
-SQL
-  begin
-    puts '> Please input SQL'
-    sql = gets.chomp
-    # ast = SqlParser.new.parse(TEST_SQL)
-    parsed = SqlParser.new.parse(sql)
-    puts "AST:"
-    pp parsed
-  rescue Racc::ParseError => e
-    $stderr.puts e
-    $stderr.puts e.backtrace
-  end
-end
+# if __FILE__ == $0
+# TEST_SQL =<<-SQL
+#   select a as aa , b as bb, (select c from hoge where c.id = 1 or hoge.id = 1) as cc inner join piyo as p on p.id = a.id left outer join aaaaa as aaa on aaa.id = a.id where aaa.gid > 1 or aaa.id > 0;
+# SQL
+#   begin
+#     puts '> Please input SQL'
+#     sql = gets.chomp
+#     # ast = SqlParser.new.parse(TEST_SQL)
+#     parsed = SqlParser.new.parse(sql)
+#     puts "AST:"
+#     pp parsed
+#   rescue Racc::ParseError => e
+#     $stderr.puts e
+#     $stderr.puts e.backtrace
+#   end
+# end
 
